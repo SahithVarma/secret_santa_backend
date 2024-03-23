@@ -1,6 +1,7 @@
 package com.haneesh.secretsanta.Service;
 
 import com.haneesh.secretsanta.Model.Santa;
+import com.haneesh.secretsanta.Model.User;
 import com.haneesh.secretsanta.Repository.SantaRepo;
 import com.haneesh.secretsanta.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,12 @@ public class SantaService {
         return santarepo.findByUniqueCode(code);
     }
     public String generateSecretSanta(String code) {
-        List<String> users=userrepo.getAllUserNamesByUniqueCode(code);
+        List<User> Allusers=userrepo.findAllByUniqueCode(code);
+        List<String> users = new ArrayList<>();
+        System.out.println(Allusers);
+        for(User u:Allusers){
+            users.add(u.getName());
+        }
         Map<String, String> d = new HashMap<>();
         List<String> unused = new ArrayList<>(users);
 

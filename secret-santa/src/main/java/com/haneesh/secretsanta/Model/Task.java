@@ -1,16 +1,18 @@
 package com.haneesh.secretsanta.Model;
 
-
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
-@Entity
+
+@Document
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "timestamp", nullable = false, updatable = false)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
+
     private Date timestamp;
     private String uniqueCode;
     private String user;
@@ -28,19 +30,20 @@ public class Task {
     }
 
     public Task(String uniqueCode, String user, String task) {
-
-        this.uniqueCode=uniqueCode;
+        this.uniqueCode = uniqueCode;
         this.user = user;
         this.task = task;
+        this.timestamp = new Date();
+
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public String getId() {
+//        return id;
+//    }
+//
+//    public void setId(String id) {
+//        this.id = id;
+//    }
 
     public Date getTimestamp() {
         return timestamp;
@@ -65,9 +68,10 @@ public class Task {
     public void setTask(String task) {
         this.task = task;
     }
-    @PrePersist
-    protected void onCreate() {
+
+    // For setting timestamp before persisting
+    // Note: MongoDB does not support @PrePersist annotation
+    public void onCreate() {
         timestamp = new Date();
     }
-
 }

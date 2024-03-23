@@ -6,9 +6,10 @@ import com.haneesh.secretsanta.Repository.TaskRepo;
 import com.haneesh.secretsanta.Repository.TeamRepo;
 import com.haneesh.secretsanta.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,7 +39,7 @@ public class UserService {
         curr_user.setAddress(user.getAddress());
         curr_user.setGmail(user.getGmail());
         curr_user.setWishlist(user.getWishlist());
-        curr_user.setGift_status(user.isGift_status());
+        curr_user.setGiftStatus(user.isGiftStatus());
         curr_user.setPhoneNumber(user.getPhoneNumber());
         userrepo.save(curr_user);
         return "updated!";
@@ -50,7 +51,7 @@ public class UserService {
 
     public int getPendingUsersCount(String code) {
         int TotalUsers=teamrepo.findByUniqueCode(code).getNumOfPlayers();
-        int RegisteredUsers=userrepo.getUsersCountByUniqueCode(code);
+        int RegisteredUsers=userrepo.countByUniqueCode(code);
         return TotalUsers-RegisteredUsers;
     }
 
@@ -68,7 +69,7 @@ public class UserService {
             return "success";
         }
         catch(Exception e){
-            return "failed";
+            return "exception : "+e;
         }
     }
 
@@ -90,7 +91,7 @@ public class UserService {
     }
 
     public List<Task> fetchTasks(String code, int count) {
-        List<Task> tasks=taskrepo.fetchByUniqueCodeOrderByCreated(code,count);
-        return tasks;
+        PageRequest pageRequest = PageRequest.of(0, count, Sort.by(Sort.Direction.DESC, "timestamp"));
+        return taskrepo.findByUniqueCode(code, pageRequest).getContent();
     }
 }

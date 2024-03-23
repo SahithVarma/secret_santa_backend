@@ -1,4 +1,4 @@
-FROM maven:3.9.5-openjdk-21 AS build
+FROM maven:3-eclipse-temurin-21-alpine AS build
 LABEL authors="dabbi"
 COPY . .
 RUN mvn clean package -DskipTests

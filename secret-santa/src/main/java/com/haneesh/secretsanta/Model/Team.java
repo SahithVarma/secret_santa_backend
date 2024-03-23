@@ -1,61 +1,45 @@
 package com.haneesh.secretsanta.Model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.springframework.data.annotation.Id;
+import java.util.Calendar;
+import java.util.Date;
 
-import java.sql.Date;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+import java.util.Date;
+
+@Document
 public class Team {
-
-
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(unique=true)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
+
     private String uniqueCode;
     private int numOfPlayers;
     private Date endDate;
-
     private int maxBudget;
-
-    public int getMaxBudget() {
-        return maxBudget;
-    }
-
-    public void setMaxBudget(int maxBudget) {
-        this.maxBudget = maxBudget;
-    }
-
-    public int getMinBudget() {
-        return minBudget;
-    }
-
-    public void setMinBudget(int minBudget) {
-        this.minBudget = minBudget;
-    }
-
     private int minBudget;
 
     public Team() {
     }
 
-    public Team(int id, String uniqueCode, int numOfPlayers, Date endDate,int maxBudget,int minBudget) {
-        this.id = id;
+    public Team(String uniqueCode, int numOfPlayers, Date endDate, int maxBudget, int minBudget) {
         this.uniqueCode = uniqueCode;
         this.numOfPlayers = numOfPlayers;
-        this.endDate = endDate;
-        this.maxBudget=maxBudget;
-        this.minBudget=minBudget;
+        setEndDate(endDate);
+        this.maxBudget = maxBudget;
+        this.minBudget = minBudget;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public String getId() {
+//        return id;
+//    }
+//
+//    public void setId(String id) {
+//        this.id = id;
+//    }
 
     public String getUniqueCode() {
         return uniqueCode;
@@ -78,6 +62,32 @@ public class Team {
     }
 
     public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+        this.endDate = normalizeToDateOnly(endDate);
+    }
+
+    public int getMaxBudget() {
+        return maxBudget;
+    }
+
+    public void setMaxBudget(int maxBudget) {
+        this.maxBudget = maxBudget;
+    }
+
+    public int getMinBudget() {
+        return minBudget;
+    }
+
+    public void setMinBudget(int minBudget) {
+        this.minBudget = minBudget;
+    }
+    private Date normalizeToDateOnly(Date date) {
+        if (date == null) return null;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
     }
 }

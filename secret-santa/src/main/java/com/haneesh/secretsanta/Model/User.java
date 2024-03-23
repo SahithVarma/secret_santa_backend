@@ -1,15 +1,16 @@
 package com.haneesh.secretsanta.Model;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+@Document
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
+
     private String name;
     private long phoneNumber;
     private String address;
@@ -18,52 +19,28 @@ public class User {
     private String gmail;
     private String hints;
     private String tasks;
+    private boolean giftStatus;
+
     public User() {
     }
 
-    public User(String name, long phoneNumber, String address, String wishlist, String gmail, boolean gift_status,String uniqueCode) {
-//        this.id = id;
+    public User(String name, long phoneNumber, String address, String wishlist, String gmail, boolean giftStatus, String uniqueCode) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.wishlist = wishlist;
         this.gmail = gmail;
-        this.gift_status = gift_status;
-        this.uniqueCode=uniqueCode;
-
-    }
-
-    public String getHints() {
-        return hints;
-    }
-
-    public void setHints(String hints) {
-        this.hints = hints;
-    }
-
-    public String getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(String tasks) {
-        this.tasks = tasks;
-    }
-
-    public String getUniqueCode() {
-        return uniqueCode;
-    }
-
-    public void setUniqueCode(String uniqueCode) {
+        this.giftStatus = giftStatus;
         this.uniqueCode = uniqueCode;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public String getId() {
+//        return id;
+//    }
+//
+//    public void setId(String id) {
+//        this.id = id;
+//    }
 
     public String getName() {
         return name;
@@ -89,6 +66,14 @@ public class User {
         this.address = address;
     }
 
+    public String getUniqueCode() {
+        return uniqueCode;
+    }
+
+    public void setUniqueCode(String uniqueCode) {
+        this.uniqueCode = uniqueCode;
+    }
+
     public String getWishlist() {
         return wishlist;
     }
@@ -105,14 +90,27 @@ public class User {
         this.gmail = gmail;
     }
 
-    public boolean isGift_status() {
-        return gift_status;
+    public boolean isGiftStatus() {
+        return giftStatus;
     }
 
-    public void setGift_status(boolean gift_status) {
-        this.gift_status = gift_status;
+    public void setGiftStatus(boolean giftStatus) {
+        this.giftStatus = giftStatus;
     }
 
-    private boolean gift_status;
+    public String getHints() {
+        return hints;
+    }
 
+    public void setHints(String hints) {
+        this.hints = hints;
+    }
+
+    public String getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(String tasks) {
+        this.tasks = tasks;
+    }
 }
