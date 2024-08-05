@@ -2,6 +2,8 @@ FROM maven:3-eclipse-temurin-21-alpine AS build
 LABEL authors="dabbi"
 COPY . .
 WORKDIR /secret-santa
+COPY pom.xml .
+COPY src src
 RUN mvn clean package -DskipTests
 
 FROM openjdk:21-jdk-slim
