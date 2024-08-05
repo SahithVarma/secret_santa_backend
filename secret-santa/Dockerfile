@@ -6,10 +6,10 @@ LABEL authors="dabbi"
 WORKDIR /secret-santa
 
 # Copy the project files to the container
-COPY . /secret-santa
+# COPY . /secret-santa
 
 # Build the project
-RUN mvn -f pom.xml clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # Expose the port the application runs on
 EXPOSE 8080
