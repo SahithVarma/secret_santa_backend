@@ -3,7 +3,7 @@ FROM maven:3-eclipse-temurin-21-alpine AS build
 LABEL authors="dabbi"
 COPY . /secret-santa
 WORKDIR /secret-santa
-RUN mvn -f /secret-santa/pom.xml clean package -DskipTests
+RUN mvn -f pom.xml clean package -DskipTests
 
 # Second Stage: Runtime Stage
 FROM openjdk:21-jdk-slim
