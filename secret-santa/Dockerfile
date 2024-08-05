@@ -1,18 +1,10 @@
-FROM maven:3-eclipse-temurin-21-alpine
-
+FROM maven:3-eclipse-temurin-21-alpine AS build
 LABEL authors="dabbi"
-
-# Set the working directory
+COPY . .
 WORKDIR /secret-santa
-
-# Copy the project files to the container
-# COPY . /secret-santa
-
-# Build the project
 RUN mvn clean package -DskipTests
 
-# Expose the port the application runs on
+FROM openjdk:21-jdk-slim
+COPY --from=build /target/secret-santa-0.0.1-SNAPSHOT.jar secret.jar
 EXPOSE 8080
-
-# Run the application
-ENTRYPOINT ["java", "-jar", "/secret-santa/target/secret-santa-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar","secret.jar"]
