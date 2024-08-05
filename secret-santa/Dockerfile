@@ -10,9 +10,14 @@ ENTRYPOINT ["java", "-jar","secret.jar"]
 
 FROM jenkins/jenkins:lts
 
-# Set the default entry point
-ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
+# Install tini
+USER root
+RUN apt-get update && apt-get install -y tini
 
-# Alternatively, you can specify the entry point directly in the CMD
-# CMD ["/usr/local/bin/jenkins.sh"]
+# Set the entry point
+ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/jenkins.sh"]
+
+# Switch back to the jenkins user
+USER jenkins
+
 
