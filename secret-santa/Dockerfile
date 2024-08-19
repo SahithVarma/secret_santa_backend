@@ -9,9 +9,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the requirements file and install Python dependencies
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+# Install any required Python packages directly
+# Example:
+# RUN pip install Flask
 
 # Copy the entire application code to the container
 COPY . /app
