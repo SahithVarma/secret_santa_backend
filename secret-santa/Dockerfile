@@ -9,9 +9,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Install any required Python packages directly
-# Example:
-# RUN pip install Flask
+# Install Python dependencies directly (if you know them)
+RUN pip install --no-cache-dir flask gunicorn
 
 # Copy the entire application code to the container
 COPY . /app
@@ -24,5 +23,5 @@ ENV FLASK_APP=secret_santa/app.py
 ENV FLASK_ENV=production
 ENV FLASK_RUN_HOST=0.0.0.0
 
-# Run the application
-CMD ["flask", "run"]
+# Use gunicorn to run the application instead of flask
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "secret_santa.app:app"]
