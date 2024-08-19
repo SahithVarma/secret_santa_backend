@@ -1,27 +1,21 @@
 # Use an official Python runtime as a parent image
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Install system dependencies (if required)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Python dependencies directly (if you know them)
-RUN pip install --no-cache-dir flask gunicorn
-
-# Copy the entire application code to the container
+# Copy the current directory contents into the container at /app
 COPY . /app
 
-# Expose the port the app will run on
-EXPOSE 5000
+# Install any needed packages specified in requirements.txt
+# If you don't have a requirements.txt, you'll need to create one or install dependencies manually.
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Set environment variables for Flask
-ENV FLASK_APP=secret_santa/app.py
-ENV FLASK_ENV=production
-ENV FLASK_RUN_HOST=0.0.0.0
+# Make port 8081 available to the world outside this container
+EXPOSE 8081
 
-# Use gunicorn to run the application instead of flask
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "secret_santa.app:app"]
+# Define environment variable
+ENV FLASK_APP=main.py
+
+# Run the application
+CMD ["flask", "run", "--host=0.0.0.0"]
