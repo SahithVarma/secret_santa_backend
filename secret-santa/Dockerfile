@@ -7,9 +7,12 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Install any needed packages specified in requirements.txt
-# If you don't have a requirements.txt, you'll need to create one or install dependencies manually.
-RUN pip install --no-cache-dir -r requirements.txt
+# Generate requirements.txt (if not available) and install dependencies
+RUN if [ ! -f "requirements.txt" ]; then \
+        echo "Flask" > requirements.txt && \
+        echo "requests" >> requirements.txt; \
+    fi && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Make port 8081 available to the world outside this container
 EXPOSE 8081
